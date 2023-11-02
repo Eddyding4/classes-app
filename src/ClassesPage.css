@@ -1,0 +1,159 @@
+.classes-page {
+    background-color: rgb(166, 150, 150);
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+  
+.class-container {
+    flex-grow: 1;
+    background-color: rgb(166, 150, 150);
+    border-radius: 10px;
+    overflow: auto;
+    display: flex;      
+    flex-direction: column;
+    align-items: center;      
+    gap: 15px;
+    box-sizing: border-box; 
+    max-height: calc(100vh - 40px);     
+    width: 70vw;
+}
+
+.class-title {
+    font-size: 30px;    
+    font-weight: bold;  
+    text-align: center; 
+    margin-bottom: 10px; 
+    color: white;
+}
+  
+.class-items-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+}
+
+.class-item {
+    background-color: yellowgreen; 
+    border: 2px solid rgb(141, 191, 40);    
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+    height: 150px;
+    color: black;
+    position: relative
+}
+
+
+.edit-delete-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.edit-button, .delete-button {
+    background-color: rgb(166, 150, 150);  
+    padding: 5px 10px;  
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;  
+    color: white;
+}
+
+.toolbar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+}
+  
+.action-button {
+    background-color: yellowgreen;
+    border: 2px solid #4CAF50;
+    color: black;
+    font-weight: bold;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    border-radius: 5px;
+    width: 120px;
+}
+  
+.add-button:hover {
+    background-color: white;
+    color: yellowgreen;
+    border: 2px solid #4CAF50;
+}
+  
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+  
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 40%;
+}
+  
+.close-button {
+    cursor: pointer;
+    float: right;
+    font-size: 28px;
+    color: black;
+}
+  
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+  
+label {
+    margin-bottom: 10px;
+    color: black;
+}
+  
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.instructions-container {
+    border-radius: 5px;         
+    padding: 20px;              
+    width: 100%;                
+    color: white;               
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  .logout-button:hover {
+    background-color: white;
+    color: red;
+    border: 2px solid red;
+}
