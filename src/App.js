@@ -1,24 +1,33 @@
 import React, { createContext, useContext, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import Report from './Report';
 import ClassesPage from './ClassesPage';
 import './App.css';
 
-export const AuthContext = createContext();
+export const AuthContext = createContext({
+  studentID: 0,
+  setStudentID: () => {},
+  handleLogout: () => {}
+});
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);  // Set initial state to false
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [studentID, setStudentID] = useState(0);
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setStudentID(0);
   };
 
   return (
     <Router>
-      <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, handleLogout }}>
+      <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, studentID, setStudentID, handleLogout }}>
         <div className="App">
           <Routes>
             <Route path="/classes_page" element={isLoggedIn ? <ClassesPage /> : <LoginForm />} />
+            <Route path="/reports" element={<Report />} />
             <Route path="/" element={<LoginForm />} />
+      
           </Routes>
         </div>
       </AuthContext.Provider>
@@ -27,8 +36,8 @@ function App() {
 }
 
 function LoginForm() {
-  const { setIsLoggedIn } = useContext(AuthContext);
-  const [studentID, setStudentID] = useState('');
+  const { setIsLoggedIn, setStudentID } = useContext(AuthContext);
+  const [studentID, setLocalStudentID] = useState('');
   const [name, setName] = useState('');
   const [major, setMajor] = useState('');
   const [grade, setGrade] = useState('');
@@ -37,8 +46,35 @@ function LoginForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsLoggedIn(true);
-    navigate('/classes_page');
+    
+    const studentData = {
+      studentID,
+      name,
+      major,
+      grade,
+      gpa
+    };
+  
+    fetch('http://localhost:5000/api/addStudent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(studentData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        setIsLoggedIn(true);
+        setStudentID(studentID);
+        navigate('/classes_page');
+      } else {
+        console.error('Failed to add student:', data.message);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   };
 
   return (
@@ -50,7 +86,7 @@ function LoginForm() {
           <input 
             type="text"
             value={studentID}
-            onChange={(e) => setStudentID(e.target.value)}
+            onChange={(e) => setLocalStudentID(e.target.value)}
             maxLength="10"
             pattern="\d{10}"
             title="Please enter a 10-digit student ID"

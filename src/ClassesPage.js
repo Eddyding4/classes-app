@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './App';
 import './ClassesPage.css';
 
@@ -6,7 +7,8 @@ function ClassesPage() {
   const [showModal, setShowModal] = useState(false);
   const [classes, setClasses] = useState([]);
   const [editingClassIndex, setEditingClassIndex] = useState(null);
-  const { handleLogout } = useContext(AuthContext);
+  const { handleLogout, studentID } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const openModal = (index) => {
     setEditingClassIndex(index);
@@ -17,14 +19,21 @@ function ClassesPage() {
     setShowModal(false);
     setEditingClassIndex(null);
   };
-
+  const submitClasses = () => {
+    navigate('/reports')
+  }
   const addClass = (newClass) => {
+    const classData = {
+      ...newClass,
+      student_id: studentID 
+    };
+    console.log(studentID)
     fetch('http://localhost:5000/api/addClass', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(newClass),
+    body: JSON.stringify(classData),
   })
   .then(response => response.json())
   .then(data => {
@@ -82,7 +91,7 @@ function ClassesPage() {
             <p>-You can logout by pressing the "Logout" and return to login.</p>
         </div>
         <button className="action-button add-button" onClick={() => openModal(null)}>Add</button>
-        <button className="action-button">Submit</button>
+        <button className="action-button" onClick={submitClasses}>Submit</button>
         <button className="action-button logout-button" onClick={handleLogout}>Logout</button>
         
       </div>
