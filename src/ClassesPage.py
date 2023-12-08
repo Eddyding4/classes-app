@@ -40,19 +40,11 @@ def add_class():
         cursor = connection.cursor()
         connection.autocommit(False)
 
-        cursor.execute("SELECT id, student_count FROM classes WHERE name = %s", (name,))
-        class_data = cursor.fetchone()
-
-        if class_data:
-            class_id, student_count = class_data
-            new_student_count = student_count + 1
-            cursor.execute("UPDATE classes SET student_count = %s WHERE id = %s", (new_student_count, class_id))
-        else:
-            cursor.execute("INSERT INTO classes (name, department, level, credits, student_id, student_count) VALUES (%s, %s, %s, %s, %s, 1)",
-                           (name, department, level, credits, student_id))
-        
+        cursor.execute("INSERT INTO classes (name, department, level, credits, student_id) VALUES (%s, %s, %s, %s, %s)",
+                       (name, department, level, credits, student_id))
         connection.commit()
-        return jsonify({'success': True, 'message': 'Class added or updated'})
+
+        return jsonify({'success': True, 'message': 'Class added'})
 
     except Exception as e:
         if connection:
